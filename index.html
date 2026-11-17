@@ -207,11 +207,11 @@ function saveProgress(){
   let all = getProgressAll();
   all[activeGameLink.id] = { id: activeGameLink.id, mode: currentMode, cardIndex: activeCardIndex, rouletteCurrentSpin: rouletteCurrentSpin, rouletteWinSpinIndex: rouletteWinSpinIndex, rouletteAlreadyWon: rouletteAlreadyWon, cards: activeGameLink.cards, finished: false, updatedAt: new Date().toISOString() };
   localStorage.setItem('scratch_progress_v3', JSON.stringify(all));
-  if(dbFirebase){ try{ dbFirebase.ref('raspaditas_progreso/' + activeGameLink.id).set(all[activeGameLink.id]); }catch(e){} }
+  if(dbFirebase){ dbFirebase.ref('raspaditas_progreso/' + activeGameLink.id).set(all[activeGameLink.id]); }
 }
 function clearProgress(id){
   let all = getProgressAll(); delete all[id]; localStorage.setItem('scratch_progress_v3', JSON.stringify(all));
-  if(dbFirebase){ try{ dbFirebase.ref('raspaditas_progreso/' + id).remove(); }catch(e){} }
+  if(dbFirebase){ dbFirebase.ref('raspaditas_progreso/' + id).remove(); }
 }
 function closeResumeBanner(){
   AudioEngine.playSelect();
@@ -254,38 +254,20 @@ function marcarUsadoEnNube(id, won, prize, mode, total){
   let m = mode || currentMode || 'raspadita';
   let tot = total || (activeGameLink ? activeGameLink.totalCards : 1);
   saveFinished(id, {won:won, prize:prize, mode:m, total:tot});
-  if(dbFirebase){ try{ dbFirebase.ref('raspaditas_usadas/' + id).set({won:won, prize:prize, mode:m, total:tot, at: new Date().toISOString()}); }catch(e){} }
+  if(dbFirebase){ dbFirebase.ref('raspaditas_usadas/' + id).set({won:won, prize:prize, mode:m, total:tot, at: new Date().toISOString()}); }
   let links=DB.getLinks();
   if(links[id]){ links[id].status='usado'; DB.saveLinks(links); }
   clearProgress(id);
 }
-/* ARREGLO BLOQUEO: espera a Firebase, no dice que está libre si Firebase todavía no cargó */
-function consultarNube(id, callback, intento){
-  intento = intento || 0;
+function consultarNube(id, callback){
   let fin = getFinished()[id];
   if(fin){ callback(fin); return; }
-  if(!dbFirebase){
-    if(intento < 10){ setTimeout(()=>consultarNube(id, callback, intento+1), 500); return; }
-    callback(null); return;
-  }
+  if(!dbFirebase){ callback(null); return; }
   dbFirebase.ref('raspaditas_usadas/' + id).once('value').then(snap=>{
     let v = snap.val();
     if(v){ saveFinished(id, v); callback(v); }
     else callback(null);
-  }).catch(()=>{
-    if(intento < 3){ setTimeout(()=>consultarNube(id, callback, intento+1), 600); }
-    else callback(null);
-  });
-}
-/* ARREGLO BLOQUEO: marca usado apenas termina la última, sin esperar Finalizar */
-function autoBloquearSiTermino(){
-  if(!activeGameLink) return;
-  if(currentMode==='raspadita' && activeCardIndex+1 >= activeGameLink.totalCards){
-    marcarUsadoEnNube(activeGameLink.id, activeGameLink.withPrize, activeGameLink.prizeAmount, 'raspadita', activeGameLink.totalCards);
-  }
-  if(currentMode==='ruleta' && rouletteCurrentSpin >= activeGameLink.totalCards){
-    marcarUsadoEnNube(activeGameLink.id, activeGameLink.withPrize, activeGameLink.prizeAmount, 'ruleta', activeGameLink.totalCards);
-  }
+  }).catch(()=>callback(null));
 }
 let currentGenerationTypeWithPrize=true,selectedCartonIndex=null,activeGameLink=null,activeCardIndex=0,isScratchingFinished=false,scratchCanvas=document.getElementById('scratch-canvas'),scratchCtx=scratchCanvas?scratchCanvas.getContext('2d'):null,isDrawing=false,lastX=0,lastY=0;
 let currentMode=null;
@@ -514,7 +496,6 @@ function onRouletteEnd(idx, isWinningSpin){
   saveProgress();
   let seg = rouletteSegments[idx];
   rouletteResult = seg;
-  if(rouletteCurrentSpin >= rouletteTotalSpins){ autoBloquearSiTermino(); }
   if(isWinningSpin && seg.isPrize){
     rouletteAlreadyWon=true; saveProgress();
     AudioEngine.playWinFanfare(); triggerConfettiAnimation();
@@ -567,7 +548,6 @@ function autoRevealAll(){isScratchingFinished=true;isDrawing=false;scratchCtx.cl
 function evaluateCardResult(){
   let cd=activeGameLink.cards[activeCardIndex],counts={},win=null;
   cd.gridSymbols.forEach(it=>{counts[it.symbol]=(counts[it.symbol]||0)+1;if(counts[it.symbol]>=3)win=it.symbol});
-  if(activeCardIndex+1 >= activeGameLink.totalCards){ autoBloquearSiTermino(); }
   if(cd.isWinner&&win){
     AudioEngine.playWinFanfare();triggerConfettiAnimation();
     cd.gridSymbols.forEach((it,ix)=>{if(it.symbol===win)document.getElementById(`symbol-cell-${ix}`).classList.add('winner-pulse')});
