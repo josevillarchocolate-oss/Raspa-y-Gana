@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Plataforma de Raspaditas Online</title>
-<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800;900&display=swap');
 body{font-family:'Poppins',sans-serif;background-color:#0f0c1b;color:#f3f4f6}
@@ -19,12 +19,17 @@ body{font-family:'Poppins',sans-serif;background-color:#0f0c1b;color:#f3f4f6}
 .roulette-center{background:radial-gradient(circle at 35% 30%, #fef3c7, #f59e0b 45%, #b45309 75%, #451a03);border:3px solid #fde68a;box-shadow:0 0 15px rgba(251,191,36,.8), inset 0 0 10px rgba(0,0,0,.5)}
 .wheel-pointer{width:0;height:0;border-left:18px solid transparent;border-right:18px solid transparent;border-top:34px solid #fde68a;filter:drop-shadow(0 3px 4px rgba(0,0,0,.6))}
 .wheel-pointer::after{content:'';position:absolute;top:-28px;left:-5px;width:10px;height:10px;background:#451a03;border-radius:9999px}
+/* Colores slate para Tailwind 2.2.19 - para que no se rompa el diseño */
+.bg-slate-950{background-color:#020617}.bg-slate-900{background-color:#0f172a}.bg-slate-800{background-color:#1e293b}
+.text-slate-600{color:#475569}.text-slate-500{color:#64748b}.text-slate-400{color:#94a3b8}.text-slate-300{color:#cbd5e1}
+.border-slate-900{border-color:#0f172a}.border-slate-800{border-color:#1e293b}.border-slate-700{border-color:#334155}
+.divide-slate-800>:not([hidden])~:not([hidden]){border-color:#1e293b}
 </style>
 </head>
 <body class="min-h-screen flex flex-col justify-between">
 <main class="flex-grow flex items-center justify-center p-4 w-full max-w-6xl mx-auto">
 
-<div id="login-view" class="w-full max-w-md bg-slate-900/90 rounded-2xl p-8 border border-slate-800 text-center hidden">
+<div id="login-view" class="w-full max-w-md bg-slate-900 rounded-2xl p-8 border border-slate-800 text-center hidden">
 <div class="text-5xl mb-3">🔐</div>
 <h2 class="text-2xl font-extrabold text-white">Acceso Panel</h2>
 <p class="text-slate-400 text-sm mt-1 mb-6">Ingresá tu usuario y contraseña para entrar.</p>
@@ -41,43 +46,43 @@ body{font-family:'Poppins',sans-serif;background-color:#0f0c1b;color:#f3f4f6}
 </form>
 </div>
 
-<div id="admin-view" class="w-full bg-slate-900/80 rounded-2xl p-6 md:p-8 border border-slate-800 shadow-2xl hidden">
+<div id="admin-view" class="w-full bg-slate-900 rounded-2xl p-6 md:p-8 border border-slate-800 shadow-2xl hidden">
 <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-slate-800 pb-6 mb-6 gap-4">
 <div><h1 class="text-3xl font-extrabold tracking-tight text-white flex items-center gap-2">🎰 <span class="bg-clip-text text-transparent bg-gradient-to-r from-amber-400 to-purple-400">Panel de Control de Raspaditas</span></h1><p class="text-slate-400 text-sm mt-1">Genera y administra los accesos únicos para los jugadores.</p></div>
-<div class="flex items-center gap-2"><span class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-emerald-400"></span> Bloqueo Global Activo - Firebase</span><button onclick="doLogout()" class="bg-slate-800 hover:bg-slate-700 text-slate-300 px-3 py-1.5 rounded-full text-xs font-semibold border border-slate-700">Cerrar sesión</button></div>
+<div class="flex items-center gap-2"><span class="bg-emerald-500 bg-opacity-10 text-emerald-400 border border-emerald-500 px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-emerald-400"></span> Bloqueo Global Activo - Firebase</span><button onclick="doLogout()" class="bg-slate-800 hover:bg-slate-700 text-slate-300 px-3 py-1.5 rounded-full text-xs font-semibold border border-slate-700">Cerrar sesión</button></div>
 </div>
 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
-<div class="bg-slate-950 p-5 rounded-xl border border-slate-800/60 text-center"><p class="text-xs text-slate-400 font-medium uppercase tracking-wider">Total de Cartones Generados</p><p id="stat-total" class="text-4xl font-black text-white mt-1">0</p><p class="text-[11px] text-slate-500 mt-1">Cartones vendidos en total</p></div>
-<div class="bg-slate-950 p-5 rounded-xl border border-amber-500/20 text-center"><p class="text-xs text-slate-400 font-medium uppercase tracking-wider">Total Premiado</p><p id="stat-total-premiado" class="text-4xl font-black text-amber-400 mt-1">0 Gs</p><p id="stat-premiado-count" class="text-[11px] text-slate-400 mt-1">0 cartones con premio</p></div>
+<div class="bg-slate-950 p-5 rounded-xl border border-slate-800 text-center"><p class="text-xs text-slate-400 font-medium uppercase tracking-wider">Total de Cartones Generados</p><p id="stat-total" class="text-4xl font-black text-white mt-1">0</p><p class="text-xs text-slate-500 mt-1">Cartones vendidos en total</p></div>
+<div class="bg-slate-950 p-5 rounded-xl border border-amber-500 text-center"><p class="text-xs text-slate-400 font-medium uppercase tracking-wider">Total Premiado</p><p id="stat-total-premiado" class="text-4xl font-black text-amber-400 mt-1">0 Gs</p><p id="stat-premiado-count" class="text-xs text-slate-400 mt-1">0 cartones con premio</p></div>
 </div>
 <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-<div class="bg-slate-950/50 p-5 rounded-xl border border-slate-800/80 h-fit">
+<div class="bg-slate-950 p-5 rounded-xl border border-slate-800 h-fit">
 <h2 class="text-lg font-bold text-white mb-4">🛠️ Configurar Enlace</h2>
 <div class="space-y-4">
 <div><label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Tipo de Enlace</label>
 <div class="grid grid-cols-2 gap-2">
-<button type="button" id="btn-type-prize" onclick="setPrizeType(true)" class="py-2.5 px-4 rounded-lg font-semibold text-sm transition border bg-amber-500/20 border-amber-500 text-amber-300">🎁 Con Premio</button>
+<button type="button" id="btn-type-prize" onclick="setPrizeType(true)" class="py-2.5 px-4 rounded-lg font-semibold text-sm transition border bg-amber-500 bg-opacity-20 border-amber-500 text-amber-300">🎁 Con Premio</button>
 <button type="button" id="btn-type-noprize" onclick="setPrizeType(false)" class="py-2.5 px-4 rounded-lg font-semibold text-sm transition border bg-slate-900 border-slate-700 text-slate-400">❌ Sin Premio</button>
 </div></div>
 <div id="wrapper-prize-amount"><label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Monto del Premio</label>
 <select id="prize-amount" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2.5 text-white font-bold"><option value="5.000">5.000 Gs</option><option value="10.000" selected>10.000 Gs</option><option value="20.000">20.000 Gs</option><option value="30.000">30.000 Gs</option><option value="50.000">50.000 Gs</option><option value="100.000">100.000 Gs</option><option value="200.000">200.000 Gs</option><option value="300.000">300.000 Gs</option><option value="500.000">500.000 Gs</option><option value="1.000.000">1.000.000 Gs</option><option value="2.000.000">2.000.000 Gs</option><option value="3.000.000">3.000.000 Gs</option><option value="5.000.000">5.000.000 Gs</option></select></div>
 <div><label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Cantidad (Max 10) - Raspaditas o Giros de Ruleta</label>
-<div class="flex items-center gap-3"><input type="range" id="card-quantity" min="1" max="10" value="1" oninput="updateQtyLabel(this.value)" class="w-full accent-purple-500"><span id="qty-label" class="bg-purple-500/20 text-purple-300 font-bold border border-purple-500/30 px-3 py-1 rounded-md text-sm min-w-[36px] text-center">1</span></div>
-<p class="text-[11px] text-slate-500 mt-1">Si elegís 3, el jugador tiene 3 raspaditas O 3 giros de ruleta.</p></div>
+<div class="flex items-center gap-3"><input type="range" id="card-quantity" min="1" max="10" value="1" oninput="updateQtyLabel(this.value)" class="w-full accent-purple-500"><span id="qty-label" class="bg-purple-500 bg-opacity-20 text-purple-300 font-bold border border-purple-500 px-3 py-1 rounded-md text-sm min-w-[36px] text-center">1</span></div>
+<p class="text-xs text-slate-500 mt-1">Si elegís 3, el jugador tiene 3 raspaditas O 3 giros de ruleta.</p></div>
 <button onclick="generateScratchLink()" class="w-full bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-bold py-3 rounded-lg">🚀 Crear Enlace Único</button>
 </div></div>
 <div class="lg:col-span-2 flex flex-col"><h2 class="text-lg font-bold text-white mb-4">🔗 Enlaces Activos Creados</h2>
-<div class="flex-grow overflow-x-auto bg-slate-950/30 border border-slate-800/80 rounded-xl max-h-[380px] overflow-y-auto">
-<table class="w-full text-left"><thead><tr class="bg-slate-950 text-slate-400 uppercase text-[10px] border-b border-slate-800"><th class="p-3">ID / Configuración</th><th class="p-3">Destino / Enlace</th><th class="p-3 text-center">Estado Global</th><th class="p-3 text-right">Acción</th></tr></thead>
-<tbody id="links-table-body" class="text-xs divide-y divide-slate-800/60"></tbody></table>
+<div class="flex-grow overflow-x-auto bg-slate-950 border border-slate-800 rounded-xl max-h-[380px] overflow-y-auto">
+<table class="w-full text-left"><thead><tr class="bg-slate-950 text-slate-400 uppercase text-xs border-b border-slate-800"><th class="p-3">ID / Configuración</th><th class="p-3">Destino / Enlace</th><th class="p-3 text-center">Estado Global</th><th class="p-3 text-right">Acción</th></tr></thead>
+<tbody id="links-table-body" class="text-xs divide-y divide-slate-800"></tbody></table>
 <div id="no-links-msg" class="text-center py-12 text-slate-500 hidden">No has generado ningún enlace todavía.</div>
 </div></div>
 </div></div>
 
-<div id="error-view" class="w-full max-w-md bg-slate-900/90 border border-red-500/30 rounded-2xl p-8 text-center hidden"><div class="text-3xl mb-4">⚠️</div><h2 class="text-2xl font-bold text-white mb-2">Enlace no válido</h2><p id="error-message-text" class="text-slate-400 text-sm">Este token ya fue utilizado.</p></div>
+<div id="error-view" class="w-full max-w-md bg-slate-900 border border-red-500 rounded-2xl p-8 text-center hidden"><div class="text-3xl mb-4">⚠️</div><h2 class="text-2xl font-bold text-white mb-2">Enlace no válido</h2><p id="error-message-text" class="text-slate-400 text-sm">Este token ya fue utilizado.</p></div>
 
-<div id="player-mode-view" class="w-full max-w-md bg-slate-900/90 rounded-2xl p-6 border border-slate-800 text-center hidden">
-<span id="mode-badge" class="bg-purple-500/20 text-purple-300 text-xs font-bold px-3 py-1 rounded-full border border-purple-500/30">🍀 ¡Buena suerte!</span>
+<div id="player-mode-view" class="w-full max-w-md bg-slate-900 rounded-2xl p-6 border border-slate-800 text-center hidden">
+<span id="mode-badge" class="bg-purple-500 bg-opacity-20 text-purple-300 text-xs font-bold px-3 py-1 rounded-full border border-purple-500">🍀 ¡Buena suerte!</span>
 <h2 class="text-2xl md:text-3xl font-extrabold text-white mt-3">¿Qué querés jugar hoy?</h2>
 <p class="text-slate-400 text-sm mt-1 mb-6">Elegí una opción. Solo podés jugar una vez con este enlace.</p>
 <div class="space-y-3">
@@ -88,16 +93,16 @@ body{font-family:'Poppins',sans-serif;background-color:#0f0c1b;color:#f3f4f6}
 <span class="text-5xl">🎡</span><span><span class="block font-extrabold text-lg">Ruleta Millonaria</span><span id="mode-ruleta-desc" class="block text-xs text-amber-100">¡Puede cambiar tu suerte!</span></span><span class="ml-auto text-2xl">➡️</span>
 </button>
 </div>
-<p class="text-[11px] text-slate-500 mt-5">Podés salir y volver a entrar mientras no termines tus raspaditas / giros. Al terminar, el enlace queda bloqueado.</p>
+<p class="text-xs text-slate-500 mt-5">Podés salir y volver a entrar mientras no termines tus raspaditas / giros. Al terminar, el enlace queda bloqueado.</p>
 </div>
 
-<div id="resume-banner" class="fixed inset-0 bg-black/85 flex items-center justify-center p-4 z-[100] hidden">
+<div id="resume-banner" class="fixed inset-0 bg-black bg-opacity-85 flex items-center justify-center p-4 z-50 hidden">
   <div class="bg-slate-900 p-8 rounded-2xl border-2 border-amber-400 max-w-sm w-full text-center shadow-2xl">
     <div class="text-6xl mb-3">👋</div>
     <h3 class="text-2xl font-black text-amber-300">¡Volviste!</h3>
     <p class="text-white font-bold mt-1">Te estábamos esperando</p>
     <p id="resume-text" class="text-slate-300 text-sm mt-3">Te faltan raspaditas por jugar</p>
-    <button onclick="closeResumeBanner()" class="w-full bg-amber-400 text-slate-950 font-black py-3 rounded-xl mt-6 text-lg">OK ✅ Continuar</button>
+    <button onclick="closeResumeBanner()" class="w-full bg-amber-400 text-slate-900 font-black py-3 rounded-xl mt-6 text-lg">OK ✅ Continuar</button>
   </div>
 </div>
 
@@ -110,63 +115,62 @@ body{font-family:'Poppins',sans-serif;background-color:#0f0c1b;color:#f3f4f6}
 <canvas id="roulette-canvas" width="300" height="300" class="w-full h-full rounded-full"></canvas>
 </div>
 <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[110px] h-[110px] roulette-center rounded-full flex flex-col items-center justify-center z-20 text-center px-2">
-<span class="text-[9px] font-black tracking-widest text-amber-900">RULETA</span>
-<span class="text-[13px] leading-[1] font-black text-white drop-shadow" style="text-shadow:0 2px 4px rgba(0,0,0,.8)">MILLONARIA</span>
-<span class="text-[8px] font-bold text-amber-100 mt-0.5">⭐ GANA HASTA ⭐</span>
-<span class="text-[10px] font-black text-yellow-200">5.000.000 Gs</span>
+<span class="text-xs font-black tracking-widest text-amber-900">RULETA</span>
+<span class="text-sm leading-none font-black text-white">MILLONARIA</span>
+<span class="text-xs font-bold text-amber-100 mt-0.5">⭐ GANA HASTA ⭐</span>
+<span class="text-xs font-black text-yellow-200">5.000.000 Gs</span>
 </div>
 </div>
 <p id="roulette-result-text" class="text-sm font-bold text-amber-300 min-h-[20px] mt-2"></p>
-<div class="mt-2"><span id="roulette-counter" class="inline-block bg-black/70 text-white text-xs font-bold px-4 py-1.5 rounded-full border border-white/20">0 de 1 giros disponibles</span></div>
-<button id="btn-spin" onclick="spinRoulette()" class="w-full bg-gradient-to-r from-amber-400 to-orange-500 text-slate-950 font-black py-3.5 rounded-xl mt-3 text-lg shadow-lg shadow-amber-500/30">🎡 ¡GIRAR RULETA!</button>
-<div id="roulette-next-wrapper" class="mt-3 hidden"><button id="btn-next-spin" onclick="nextRouletteSpin()" class="w-full bg-white text-slate-950 font-extrabold py-3 rounded-xl">Siguiente Giro ➡️</button></div>
-<div id="roulette-finish-wrapper" class="mt-3 hidden"><button onclick="finishRoulette()" class="w-full bg-amber-400 text-slate-950 font-black py-3 rounded-xl">Finalizar y Ver Resultado 🏁</button></div>
+<div class="mt-2"><span id="roulette-counter" class="inline-block bg-black bg-opacity-70 text-white text-xs font-bold px-4 py-1.5 rounded-full border border-white">0 de 1 giros disponibles</span></div>
+<button id="btn-spin" onclick="spinRoulette()" class="w-full bg-gradient-to-r from-amber-400 to-orange-500 text-slate-900 font-black py-3.5 rounded-xl mt-3 text-lg shadow-lg">🎡 ¡GIRAR RULETA!</button>
+<div id="roulette-next-wrapper" class="mt-3 hidden"><button id="btn-next-spin" onclick="nextRouletteSpin()" class="w-full bg-white text-slate-900 font-extrabold py-3 rounded-xl">Siguiente Giro ➡️</button></div>
+<div id="roulette-finish-wrapper" class="mt-3 hidden"><button onclick="finishRoulette()" class="w-full bg-amber-400 text-slate-900 font-black py-3 rounded-xl">Finalizar y Ver Resultado 🏁</button></div>
 </div>
 
-<div id="player-select-view" class="w-full max-w-2xl bg-slate-900/80 rounded-2xl p-6 border border-slate-800 text-center hidden">
-<span id="player-badge-qty" class="bg-purple-500/20 text-purple-300 text-xs font-bold px-3 py-1 rounded-full border border-purple-500/30">Cargando...</span>
+<div id="player-select-view" class="w-full max-w-2xl bg-slate-900 rounded-2xl p-6 border border-slate-800 text-center hidden">
+<span id="player-badge-qty" class="bg-purple-500 bg-opacity-20 text-purple-300 text-xs font-bold px-3 py-1 rounded-full border border-purple-500">Cargando...</span>
 <h2 class="text-2xl md:text-3xl font-extrabold text-white mt-3">¡Elige tu Cartón de la Suerte!</h2>
 <p id="select-progress-text" class="text-amber-300 text-sm font-bold mt-1">Te faltan 5 raspaditas</p>
 <p class="text-slate-400 text-sm mt-1">Selecciona uno de los 9 cartones para empezar.</p>
 <div class="grid grid-cols-3 gap-3 max-w-md mx-auto aspect-square mb-6 mt-4">
-<button onclick="selectCarton(0)" id="carton-0" class="shimmer-bg rounded-xl border-2 border-slate-700/60 scratch-card">🦊<span class="text-xs block opacity-60">#1</span></button>
-<button onclick="selectCarton(1)" id="carton-1" class="shimmer-bg rounded-xl border-2 border-slate-700/60 scratch-card">🦁<span class="text-xs block opacity-60">#2</span></button>
-<button onclick="selectCarton(2)" id="carton-2" class="shimmer-bg rounded-xl border-2 border-slate-700/60 scratch-card">🐼<span class="text-xs block opacity-60">#3</span></button>
-<button onclick="selectCarton(3)" id="carton-3" class="shimmer-bg rounded-xl border-2 border-slate-700/60 scratch-card">🦊<span class="text-xs block opacity-60">#4</span></button>
-<button onclick="selectCarton(4)" id="carton-4" class="shimmer-bg rounded-xl border-2 border-slate-700/60 scratch-card">🦁<span class="text-xs block opacity-60">#5</span></button>
-<button onclick="selectCarton(5)" id="carton-5" class="shimmer-bg rounded-xl border-2 border-slate-700/60 scratch-card">🐼<span class="text-xs block opacity-60">#6</span></button>
-<button onclick="selectCarton(6)" id="carton-6" class="shimmer-bg rounded-xl border-2 border-slate-700/60 scratch-card">🦊<span class="text-xs block opacity-60">#7</span></button>
-<button onclick="selectCarton(7)" id="carton-7" class="shimmer-bg rounded-xl border-2 border-slate-700/60 scratch-card">🦁<span class="text-xs block opacity-60">#8</span></button>
-<button onclick="selectCarton(8)" id="carton-8" class="shimmer-bg rounded-xl border-2 border-slate-700/60 scratch-card">🐼<span class="text-xs block opacity-60">#9</span></button>
+<button onclick="selectCarton(0)" id="carton-0" class="shimmer-bg rounded-xl border-2 border-slate-700 scratch-card">🦊<span class="text-xs block opacity-60">#1</span></button>
+<button onclick="selectCarton(1)" id="carton-1" class="shimmer-bg rounded-xl border-2 border-slate-700 scratch-card">🦁<span class="text-xs block opacity-60">#2</span></button>
+<button onclick="selectCarton(2)" id="carton-2" class="shimmer-bg rounded-xl border-2 border-slate-700 scratch-card">🐼<span class="text-xs block opacity-60">#3</span></button>
+<button onclick="selectCarton(3)" id="carton-3" class="shimmer-bg rounded-xl border-2 border-slate-700 scratch-card">🦊<span class="text-xs block opacity-60">#4</span></button>
+<button onclick="selectCarton(4)" id="carton-4" class="shimmer-bg rounded-xl border-2 border-slate-700 scratch-card">🦁<span class="text-xs block opacity-60">#5</span></button>
+<button onclick="selectCarton(5)" id="carton-5" class="shimmer-bg rounded-xl border-2 border-slate-700 scratch-card">🐼<span class="text-xs block opacity-60">#6</span></button>
+<button onclick="selectCarton(6)" id="carton-6" class="shimmer-bg rounded-xl border-2 border-slate-700 scratch-card">🦊<span class="text-xs block opacity-60">#7</span></button>
+<button onclick="selectCarton(7)" id="carton-7" class="shimmer-bg rounded-xl border-2 border-slate-700 scratch-card">🦁<span class="text-xs block opacity-60">#8</span></button>
+<button onclick="selectCarton(8)" id="carton-8" class="shimmer-bg rounded-xl border-2 border-slate-700 scratch-card">🐼<span class="text-xs block opacity-60">#9</span></button>
 </div>
 <button id="btn-confirm-select" disabled onclick="goToScratchPhase()" class="w-full max-w-xs bg-slate-800 text-slate-500 font-bold py-3 rounded-xl">Selecciona un cartón</button>
 </div>
 
-<div id="player-scratch-view" class="w-full max-w-md bg-slate-900/90 rounded-2xl p-6 border border-slate-800 text-center hidden">
+<div id="player-scratch-view" class="w-full max-w-md bg-slate-900 rounded-2xl p-6 border border-slate-800 text-center hidden">
 <div class="flex justify-between items-center mb-4 text-xs font-semibold text-slate-400"><span id="scratch-current-status">Raspadita 1 de 1</span><span id="scratch-percent-display" class="bg-slate-800 px-2.5 py-1 rounded-md text-purple-400">Raspado: 0%</span></div>
-<div class="relative w-full aspect-square bg-slate-950 rounded-xl overflow-hidden border border-slate-800/80 touch-none"><div id="symbols-grid" class="absolute inset-0 grid grid-cols-3 grid-rows-3 p-3 gap-2"></div><canvas id="scratch-canvas" class="absolute inset-0 w-full h-full cursor-crosshair z-20"></canvas></div>
+<div class="relative w-full aspect-square bg-slate-950 rounded-xl overflow-hidden border border-slate-800 touch-none"><div id="symbols-grid" class="absolute inset-0 grid grid-cols-3 grid-rows-3 p-3 gap-2"></div><canvas id="scratch-canvas" class="absolute inset-0 w-full h-full cursor-crosshair z-20"></canvas></div>
 <p class="text-xs text-slate-400 mt-4 animate-pulse">Usa tu dedo para raspar. Al 50% se revela todo.</p>
 <div id="next-action-wrapper" class="mt-5 hidden"><button id="btn-next-card" onclick="advanceNextCardOrFinish()" class="w-full bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-bold py-3 rounded-xl">Siguiente</button></div>
 </div>
 
-<div id="blocked-view" class="w-full max-w-md bg-slate-900/90 border border-slate-800 rounded-2xl p-8 text-center hidden">
-<span id="finished-game-type" class="inline-block bg-purple-500/20 text-purple-300 text-xs font-black px-4 py-1.5 rounded-full border border-purple-500/40 tracking-widest">🎰 RASPADITA</span>
+<div id="blocked-view" class="w-full max-w-md bg-slate-900 border border-slate-800 rounded-2xl p-8 text-center hidden">
+<span id="finished-game-type" class="inline-block bg-purple-500 bg-opacity-20 text-purple-300 text-xs font-black px-4 py-1.5 rounded-full border border-purple-500 tracking-widest">🎰 RASPADITA</span>
 <div id="finished-icon" class="text-6xl my-4">🏆</div>
 <h2 id="finished-title" class="text-2xl font-black text-white mb-2">TERMINADO</h2>
 <p id="finished-subtitle" class="text-lg font-bold text-amber-400">Ganaste 10.000 Gs</p>
 <p id="finished-count" class="text-amber-300 font-black text-base mt-2">5 de 5</p>
 <p id="finished-game-detail" class="text-slate-400 text-sm mt-2">Este enlace ya fue utilizado y no se puede volver a raspar.</p>
-<p id="finished-code" class="text-[11px] text-slate-500 mt-4 font-mono"></p>
+<p id="finished-code" class="text-xs text-slate-500 mt-4 font-mono"></p>
 </div>
 
-<!-- VENTANITA ENLACE COPIADO -->
-<div id="toast-copiado" class="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-emerald-500 text-white font-black px-6 py-4 rounded-2xl shadow-2xl z-[200] hidden text-center">
+<div id="toast-copiado" class="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-emerald-500 text-white font-black px-6 py-4 rounded-2xl shadow-2xl z-50 hidden text-center">
   ✅ Enlace copiado<br><span class="text-xs font-normal">Ya podés pegarlo en WhatsApp</span>
 </div>
 
 </main>
 <canvas id="confetti-canvas" class="fixed inset-0 pointer-events-none w-full h-full z-50 hidden"></canvas>
-<footer class="text-center py-4 text-xs text-slate-600 border-t border-slate-900/60">Plataforma Segura de Raspaditas Virtuales &copy; 2026</footer>
+<footer class="text-center py-4 text-xs text-slate-600 border-t border-slate-900">Plataforma Segura de Raspaditas Virtuales &copy; 2026</footer>
 
 <script>
 let dbFirebase=null, firebaseLoaded=false;
@@ -194,7 +198,7 @@ function loadFirebaseLazy(){
   };
   document.head.appendChild(s1);
 }
-setTimeout(loadFirebaseLazy, 1500);
+setTimeout(loadFirebaseLazy, 3000);
 const ADMIN_USER = "raspaditas19";
 const ADMIN_PASS = "190419";
 function isAdminLogged(){ return localStorage.getItem('raspadita_admin_session')==='ok'; }
@@ -248,8 +252,8 @@ function showFinishedScreen(id, won, prizeAmount, mode, total){
   let m = mode || currentMode || 'raspadita';
   let tot = total || (activeGameLink ? activeGameLink.totalCards : 1);
   let badge = document.getElementById('finished-game-type');
-  if(m==='ruleta'){ badge.textContent = '🎡 RULETA'; badge.className = 'inline-block bg-amber-500/20 text-amber-300 text-xs font-black px-4 py-1.5 rounded-full border border-amber-500/40 tracking-widest'; }
-  else { badge.textContent = '🎰 RASPADITA'; badge.className = 'inline-block bg-purple-500/20 text-purple-300 text-xs font-black px-4 py-1.5 rounded-full border border-purple-500/40 tracking-widest'; }
+  if(m==='ruleta'){ badge.textContent = '🎡 RULETA'; badge.className = 'inline-block bg-amber-500 bg-opacity-20 text-amber-300 text-xs font-black px-4 py-1.5 rounded-full border border-amber-500 tracking-widest'; }
+  else { badge.textContent = '🎰 RASPADITA'; badge.className = 'inline-block bg-purple-500 bg-opacity-20 text-purple-300 text-xs font-black px-4 py-1.5 rounded-full border border-purple-500 tracking-widest'; }
   document.getElementById('finished-count').textContent = tot + ' de ' + tot + (m==='ruleta' ? ' giros' : ' raspaditas');
   if(won){
     document.getElementById('finished-icon').innerText='🏆';
@@ -304,12 +308,12 @@ function setPrizeType(h){
   currentGenerationTypeWithPrize=h;
   let b1=document.getElementById('btn-type-prize'),b2=document.getElementById('btn-type-noprize'),w=document.getElementById('wrapper-prize-amount');
   if(h){
-    b1.classList.remove('bg-slate-900','border-slate-700','text-slate-400'); b1.classList.add('bg-amber-500/20','border-amber-500','text-amber-300');
-    b2.classList.remove('bg-purple-500/20','border-purple-500','text-purple-300'); b2.classList.add('bg-slate-900','border-slate-700','text-slate-400');
+    b1.classList.remove('bg-slate-900','border-slate-700','text-slate-400'); b1.classList.add('bg-amber-500','bg-opacity-20','border-amber-500','text-amber-300');
+    b2.classList.remove('bg-purple-500','bg-opacity-20','border-purple-500','text-purple-300'); b2.classList.add('bg-slate-900','border-slate-700','text-slate-400');
     w.classList.remove('hidden');
   }else{
-    b2.classList.remove('bg-slate-900','border-slate-700','text-slate-400'); b2.classList.add('bg-purple-500/20','border-purple-500','text-purple-300');
-    b1.classList.remove('bg-amber-500/20','border-amber-500','text-amber-300'); b1.classList.add('bg-slate-900','border-slate-700','text-slate-400');
+    b2.classList.remove('bg-slate-900','border-slate-700','text-slate-400'); b2.classList.add('bg-purple-500','bg-opacity-20','border-purple-500','text-purple-300');
+    b1.classList.remove('bg-amber-500','bg-opacity-20','border-amber-500','text-amber-300'); b1.classList.add('bg-slate-900','border-slate-700','text-slate-400');
     w.classList.add('hidden');
   }
 }
@@ -332,18 +336,24 @@ function renderLinksTable(){
   let links=DB.getLinks(), finished=getFinished(), tbody=document.getElementById('links-table-body'),msg=document.getElementById('no-links-msg');
   let keys=Object.keys(links).reverse();
   if(keys.length==0){tbody.innerHTML='';msg.classList.remove('hidden');return}else msg.classList.add('hidden');
+  let keysToShow = keys.slice(0, 20);
   let frag=document.createDocumentFragment();
-  keys.forEach(k=>{
-    let d=links[k], tr=document.createElement('tr'); tr.className="hover:bg-slate-900/40";
+  keysToShow.forEach(k=>{
+    let d=links[k], tr=document.createElement('tr'); tr.className="hover:bg-slate-900";
     let url=location.origin+location.pathname+'?card='+d.token;
-    let badge=d.withPrize?`<span class="text-amber-400 bg-amber-400/10 px-2 py-0.5 rounded">Premio (${d.prizeAmount} Gs)</span>`:`<span class="text-slate-400 bg-slate-800 px-2 py-0.5 rounded">Sin Premio</span>`;
+    let badge=d.withPrize?`<span class="text-amber-400 bg-amber-400 bg-opacity-10 px-2 py-0.5 rounded">Premio (${d.prizeAmount} Gs)</span>`:`<span class="text-slate-400 bg-slate-800 px-2 py-0.5 rounded">Sin Premio</span>`;
     let fin=finished[k];
     let isUsed = d.status==='usado' || !!fin;
-    let estadoHtml = isUsed ? (fin && fin.won ? `<span class="text-emerald-300 bg-emerald-500/10 border border-emerald-500/30 px-2 py-0.5 rounded font-bold">🔴 USADO - ${fin.mode==='ruleta'?'Ruleta':'Raspadita'} - Ganó ${fin.prize} Gs</span>` : `<span class="text-rose-300 bg-rose-500/10 border border-rose-500/30 px-2 py-0.5 rounded font-bold">🔴 USADO - ${fin && fin.mode==='ruleta'?'Ruleta':'Raspadita'} - Sin Premio</span>`) : `<span class="text-emerald-300 bg-emerald-500/10 px-2 py-0.5 rounded">🟢 Disponible</span>`;
-    tr.innerHTML=`<td class="p-3"><div class="font-bold text-white">${d.totalCards} raspadita(s) o ${d.totalCards} giro(s) Ruleta</div><div class="text-slate-500 text-[10px]">${d.createdAt} | ${badge}</div></td><td class="p-3"><input type="text" readonly value="${url}" onclick="this.select();" class="bg-slate-900 border border-slate-700/60 rounded px-2.5 py-1 text-purple-300 w-full max-w-[240px] text-xs"></td><td class="p-3 text-center">${estadoHtml}</td><td class="p-3 text-right"><button onclick="copyToClipboard('${url}',this)" class="bg-slate-800 hover:bg-slate-700 text-slate-300 px-2.5 py-1.5 rounded">📋 Copiar</button> <button onclick="marcarUsado('${k}')" class="bg-slate-800 hover:bg-slate-700 text-slate-300 px-2.5 py-1.5 rounded">✔️ Marcar Usado</button></td>`;
+    let estadoHtml = isUsed ? (fin && fin.won ? `<span class="text-emerald-300 bg-emerald-500 bg-opacity-10 border border-emerald-500 px-2 py-0.5 rounded font-bold">🔴 USADO - ${fin.mode==='ruleta'?'Ruleta':'Raspadita'} - Ganó ${fin.prize} Gs</span>` : `<span class="text-rose-300 bg-rose-500 bg-opacity-10 border border-rose-500 px-2 py-0.5 rounded font-bold">🔴 USADO - ${fin && fin.mode==='ruleta'?'Ruleta':'Raspadita'} - Sin Premio</span>`) : `<span class="text-emerald-300 bg-emerald-500 bg-opacity-10 px-2 py-0.5 rounded">🟢 Disponible</span>`;
+    tr.innerHTML=`<td class="p-3"><div class="font-bold text-white">${d.totalCards} raspadita(s) o ${d.totalCards} giro(s) Ruleta</div><div class="text-slate-500 text-xs">${d.createdAt} | ${badge}</div></td><td class="p-3"><input type="text" readonly value="${url}" onclick="this.select();" class="bg-slate-900 border border-slate-700 rounded px-2.5 py-1 text-purple-300 w-full max-w-[240px] text-xs"></td><td class="p-3 text-center">${estadoHtml}</td><td class="p-3 text-right"><button onclick="copyToClipboard('${url}',this)" class="bg-slate-800 hover:bg-slate-700 text-slate-300 px-2.5 py-1.5 rounded">📋 Copiar</button> <button onclick="marcarUsado('${k}')" class="bg-slate-800 hover:bg-slate-700 text-slate-300 px-2.5 py-1.5 rounded">✔️ Marcar Usado</button></td>`;
     frag.appendChild(tr);
   });
   tbody.innerHTML=''; tbody.appendChild(frag);
+  if(keys.length > 20){
+    let tr=document.createElement('tr');
+    tr.innerHTML=`<td colspan="4" class="p-3 text-center text-slate-400 text-xs">Mostrando los últimos 20 de ${keys.length} enlaces.</td>`;
+    tbody.appendChild(tr);
+  }
 }
 function marcarUsado(id){
   let links=DB.getLinks(); if(!links[id]) return;
@@ -574,10 +584,10 @@ function showSelectionScreen(){
   document.getElementById('player-select-view').classList.remove('hidden');
   document.getElementById('player-badge-qty').textContent=`Raspadita ${activeCardIndex+1} de ${activeGameLink.totalCards}`;
   document.getElementById('select-progress-text').textContent=`Te faltan ${activeGameLink.totalCards-activeCardIndex} raspadita(s) - Ya jugaste ${activeCardIndex}`;
-  selectedCartonIndex=null;let b=document.getElementById('btn-confirm-select');b.disabled=true;b.className="w-full max-w-xs bg-slate-800 text-slate-500 font-bold py-3 rounded-xl";b.textContent="Selecciona un cartón";for(let i=0;i<9;i++){document.getElementById(`carton-${i}`).className="shimmer-bg rounded-xl border-2 border-slate-700/60 flex flex-col items-center justify-center p-2 text-slate-300 text-lg font-bold scratch-card"}}
-function selectCarton(ix){AudioEngine.playSelect();selectedCartonIndex=ix;for(let i=0;i<9;i++){let c=document.getElementById(`carton-${i}`);if(i===ix)c.className="bg-purple-900/40 rounded-xl border-2 border-amber-400 text-amber-300 text-lg font-bold scratch-card";else c.className="shimmer-bg rounded-xl border-2 border-slate-800 text-slate-600 flex flex-col items-center justify-center p-2 text-lg font-bold opacity-40"}let b=document.getElementById('btn-confirm-select');b.disabled=false;b.className="w-full max-w-xs bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 font-extrabold py-3 rounded-xl";b.textContent="Confirmar y Raspar Cartón"}
+  selectedCartonIndex=null;let b=document.getElementById('btn-confirm-select');b.disabled=true;b.className="w-full max-w-xs bg-slate-800 text-slate-500 font-bold py-3 rounded-xl";b.textContent="Selecciona un cartón";for(let i=0;i<9;i++){document.getElementById(`carton-${i}`).className="shimmer-bg rounded-xl border-2 border-slate-700 flex flex-col items-center justify-center p-2 text-slate-300 text-lg font-bold scratch-card"}}
+function selectCarton(ix){AudioEngine.playSelect();selectedCartonIndex=ix;for(let i=0;i<9;i++){let c=document.getElementById(`carton-${i}`);if(i===ix)c.className="bg-purple-900 rounded-xl border-2 border-amber-400 text-amber-300 text-lg font-bold scratch-card";else c.className="shimmer-bg rounded-xl border-2 border-slate-800 text-slate-600 flex flex-col items-center justify-center p-2 text-lg font-bold opacity-40"}let b=document.getElementById('btn-confirm-select');b.disabled=false;b.className="w-full max-w-xs bg-gradient-to-r from-amber-500 to-amber-600 text-slate-900 font-extrabold py-3 rounded-xl";b.textContent="Confirmar y Raspar Cartón"}
 function goToScratchPhase(){if(selectedCartonIndex===null)return;AudioEngine.playSelect();document.getElementById('player-select-view').classList.add('hidden');document.getElementById('player-scratch-view').classList.remove('hidden');setupScratchCardGame()}
-function setupScratchCardGame(){isScratchingFinished=false;document.getElementById('scratch-current-status').textContent=`Raspadita ${activeCardIndex+1} de ${activeGameLink.totalCards}`;document.getElementById('scratch-percent-display').textContent="Raspado: 0%";document.getElementById('next-action-wrapper').classList.add('hidden');let cur=activeGameLink.cards[activeCardIndex],grid=document.getElementById('symbols-grid');grid.innerHTML='';cur.gridSymbols.forEach((it,ix)=>{let c=document.createElement('div');c.id=`symbol-cell-${ix}`;c.className="bg-slate-900 border border-slate-800/80 rounded-xl flex flex-col items-center justify-center p-1";c.innerHTML=`<span class="text-3xl md:text-4xl">${it.symbol}</span><span class="text-[10px] md:text-xs text-amber-400/90 font-bold mt-1">${it.amount} Gs</span>`;grid.appendChild(c)});scratchCanvas.width=scratchCanvas.offsetWidth;scratchCanvas.height=scratchCanvas.offsetHeight;scratchCtx.globalCompositeOperation='source-over';let g=scratchCtx.createLinearGradient(0,0,scratchCanvas.width,scratchCanvas.height);g.addColorStop(0,'#d97706');g.addColorStop(.5,'#f59e0b');g.addColorStop(1,'#b45309');scratchCtx.fillStyle=g;scratchCtx.fillRect(0,0,scratchCanvas.width,scratchCanvas.height);scratchCtx.font='bold 15px sans-serif';scratchCtx.fillStyle='#451a03';scratchCtx.textAlign='center';scratchCtx.textBaseline='middle';scratchCtx.fillText('RASPA TU ANIMAL DE LA SUERTE',scratchCanvas.width/2,scratchCanvas.height/2);scratchCanvas.addEventListener('mousedown',startScratching);scratchCanvas.addEventListener('mousemove',scratchAction);window.addEventListener('mouseup',stopScratching);scratchCanvas.addEventListener('touchstart',startScratching,{passive:true});scratchCanvas.addEventListener('touchmove',scratchAction,{passive:true});window.addEventListener('touchend',stopScratching)}
+function setupScratchCardGame(){isScratchingFinished=false;document.getElementById('scratch-current-status').textContent=`Raspadita ${activeCardIndex+1} de ${activeGameLink.totalCards}`;document.getElementById('scratch-percent-display').textContent="Raspado: 0%";document.getElementById('next-action-wrapper').classList.add('hidden');let cur=activeGameLink.cards[activeCardIndex],grid=document.getElementById('symbols-grid');grid.innerHTML='';cur.gridSymbols.forEach((it,ix)=>{let c=document.createElement('div');c.id=`symbol-cell-${ix}`;c.className="bg-slate-900 border border-slate-800 rounded-xl flex flex-col items-center justify-center p-1";c.innerHTML=`<span class="text-3xl md:text-4xl">${it.symbol}</span><span class="text-xs text-amber-400 font-bold mt-1">${it.amount} Gs</span>`;grid.appendChild(c)});scratchCanvas.width=scratchCanvas.offsetWidth;scratchCanvas.height=scratchCanvas.offsetHeight;scratchCtx.globalCompositeOperation='source-over';let g=scratchCtx.createLinearGradient(0,0,scratchCanvas.width,scratchCanvas.height);g.addColorStop(0,'#d97706');g.addColorStop(.5,'#f59e0b');g.addColorStop(1,'#b45309');scratchCtx.fillStyle=g;scratchCtx.fillRect(0,0,scratchCanvas.width,scratchCanvas.height);scratchCtx.font='bold 15px sans-serif';scratchCtx.fillStyle='#451a03';scratchCtx.textAlign='center';scratchCtx.textBaseline='middle';scratchCtx.fillText('RASPA TU ANIMAL DE LA SUERTE',scratchCanvas.width/2,scratchCanvas.height/2);scratchCanvas.addEventListener('mousedown',startScratching);scratchCanvas.addEventListener('mousemove',scratchAction);window.addEventListener('mouseup',stopScratching);scratchCanvas.addEventListener('touchstart',startScratching,{passive:true});scratchCanvas.addEventListener('touchmove',scratchAction,{passive:true});window.addEventListener('touchend',stopScratching)}
 function startScratching(e){if(isScratchingFinished)return;isDrawing=true;let c=getEventCoords(e);lastX=c.x;lastY=c.y}
 function scratchAction(e){if(!isDrawing||isScratchingFinished)return;let c=getEventCoords(e);scratchCtx.globalCompositeOperation='destination-out';scratchCtx.lineWidth=34;scratchCtx.lineCap='round';scratchCtx.lineJoin='round';scratchCtx.beginPath();scratchCtx.moveTo(lastX,lastY);scratchCtx.lineTo(c.x,c.y);scratchCtx.stroke();lastX=c.x;lastY=c.y;if(Math.random()<.35)AudioEngine.playScratch();checkScratchPercentage()}
 function stopScratching(){isDrawing=false}
@@ -598,10 +608,10 @@ function evaluateCardResult(){
   document.getElementById('next-action-wrapper').classList.remove('hidden');
   let n=document.getElementById('btn-next-card');
   if(activeCardIndex+1<activeGameLink.totalCards)n.textContent="Ir a Siguiente Raspadita ➡️";
-  else{n.textContent="Finalizar y Ver Resultado 🏁";n.className="w-full bg-amber-500 text-slate-950 font-extrabold py-3 rounded-xl"}
+  else{n.textContent="Finalizar y Ver Resultado 🏁";n.className="w-full bg-amber-500 text-slate-900 font-extrabold py-3 rounded-xl"}
 }
-function showCelebrationModal(a){let o=document.createElement('div');o.id="celebration-overlay";o.className="fixed inset-0 bg-black/80 flex items-center justify-center p-4 z-50";o.innerHTML=`<div class="bg-gradient-to-b from-slate-900 to-indigo-950 p-8 rounded-2xl border-2 border-amber-400 max-w-sm w-full text-center"><div class="text-6xl mb-3 animate-bounce">🏆</div><h3 class="text-3xl font-extrabold text-amber-400 gold-text uppercase">¡Felicidades!</h3><p class="text-white text-lg font-semibold mt-2">¡GANASTE ${a} Gs!</p><button onclick="closeCelebrationModal()" class="mt-6 w-full bg-amber-500 text-slate-950 font-extrabold py-2.5 rounded-lg">Continuar</button></div>`;document.body.appendChild(o)}
-function showLoseModal(){let o=document.createElement('div');o.id="celebration-overlay";o.className="fixed inset-0 bg-black/80 flex items-center justify-center p-4 z-50";o.innerHTML=`<div class="bg-slate-900 p-8 rounded-2xl border-2 border-slate-700 max-w-sm w-full text-center"><div class="text-6xl mb-3">🍀</div><h3 class="text-3xl font-extrabold text-white uppercase">Sin Premio</h3><p class="text-slate-300 text-sm mt-2">Sigue intentando, ¡tu suerte puede cambiar en la siguiente raspadita!</p><button onclick="closeCelebrationModal()" class="mt-6 w-full bg-purple-600 text-white font-extrabold py-2.5 rounded-lg">Continuar</button></div>`;document.body.appendChild(o)}
+function showCelebrationModal(a){let o=document.createElement('div');o.id="celebration-overlay";o.className="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center p-4 z-50";o.innerHTML=`<div class="bg-gradient-to-b from-slate-900 to-indigo-950 p-8 rounded-2xl border-2 border-amber-400 max-w-sm w-full text-center"><div class="text-6xl mb-3 animate-bounce">🏆</div><h3 class="text-3xl font-extrabold text-amber-400 gold-text uppercase">¡Felicidades!</h3><p class="text-white text-lg font-semibold mt-2">¡GANASTE ${a} Gs!</p><button onclick="closeCelebrationModal()" class="mt-6 w-full bg-amber-500 text-slate-900 font-extrabold py-2.5 rounded-lg">Continuar</button></div>`;document.body.appendChild(o)}
+function showLoseModal(){let o=document.createElement('div');o.id="celebration-overlay";o.className="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center p-4 z-50";o.innerHTML=`<div class="bg-slate-900 p-8 rounded-2xl border-2 border-slate-700 max-w-sm w-full text-center"><div class="text-6xl mb-3">🍀</div><h3 class="text-3xl font-extrabold text-white uppercase">Sin Premio</h3><p class="text-slate-300 text-sm mt-2">Sigue intentando, ¡tu suerte puede cambiar en la siguiente raspadita!</p><button onclick="closeCelebrationModal()" class="mt-6 w-full bg-purple-600 text-white font-extrabold py-2.5 rounded-lg">Continuar</button></div>`;document.body.appendChild(o)}
 function closeCelebrationModal(){let m=document.getElementById('celebration-overlay');if(m)m.remove()}
 function advanceNextCardOrFinish(){
   closeCelebrationModal(); activeCardIndex++;
@@ -612,4 +622,4 @@ function advanceNextCardOrFinish(){
 function triggerConfettiAnimation(){let c=document.getElementById('confetti-canvas');c.classList.remove('hidden');let ctx=c.getContext('2d');c.width=innerWidth;c.height=innerHeight;let parts=[],cols=['#fbbf24','#f59e0b','#8b5cf6','#ec4899','#3b82f6'];for(let i=0;i<120;i++)parts.push({x:Math.random()*c.width,y:Math.random()*c.height-c.height,r:Math.random()*6+4,d:Math.random()*c.height,color:cols[Math.floor(Math.random()*cols.length)],tilt:0,tiltAngle:0,inc:Math.random()*.07+.02});function draw(){ctx.clearRect(0,0,c.width,c.height);parts.forEach((p,ix)=>{p.tiltAngle+=p.inc;p.y+=(Math.cos(p.d)+3+p.r/2)/2;p.x+=Math.sin(p.tiltAngle);p.tilt=Math.sin(p.tiltAngle-ix/3)*15;ctx.beginPath();ctx.lineWidth=p.r;ctx.strokeStyle=p.color;ctx.moveTo(p.x+p.tilt+p.r/2,p.y);ctx.lineTo(p.x+p.tilt,p.y+p.tilt+p.r/2);ctx.stroke()});parts=parts.filter(p=>p.y<=c.height);if(parts.length>0&&isScratchingFinished)requestAnimationFrame(draw);else c.classList.add('hidden')}draw()}
 </script>
 </body>
-  </html>
+</html>
